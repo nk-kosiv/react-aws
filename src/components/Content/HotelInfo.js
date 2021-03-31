@@ -1,8 +1,34 @@
-import React from "react";
-import accessibilityData from "./../data/accessibilities.json";
-import servicesData from "./../data/services.json";
+import React, { useEffect, useState } from "react";
 
 const HotelInfo = () => {
+  const [servicesData, setServicesData] = useState([]);
+  const [accessibilityData, setAccessibilityData] = useState([]);
+
+  const loadAccessibilityData = async () => {
+    const responce = await fetch(
+      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/accessibilities"
+    );
+
+    const result = await responce.json();
+
+    setAccessibilityData(result);
+  };
+
+  const loadServicesData = async () => {
+    const responce = await fetch(
+      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/services"
+    );
+
+    const result = await responce.json();
+
+    setServicesData(result);
+  };
+
+  useEffect(() => {
+    // Load the menu links from API Gateway
+    loadAccessibilityData();
+    loadServicesData();
+  }, []);
   return (
     <div className="scene" id="hotelinfo">
       <article className="heading">
@@ -45,8 +71,8 @@ const HotelInfo = () => {
             your stay comfortable, and your experience one-of-a-kind.
           </p>
           <ul>
-            {servicesData.map((service) => (
-              <li>{service.name}</li>
+            {servicesData.map((service, i) => (
+              <li key={i.toString()}>{service.name}</li>
             ))}
           </ul>
         </section>
@@ -58,8 +84,8 @@ const HotelInfo = () => {
             needs:
           </p>
           <ul>
-            {accessibilityData.map((accessibility) => (
-              <li>{accessibility.name}</li>
+            {accessibilityData.map((accessibility, i) => (
+              <li key={i.toString()}>{accessibility.name}</li>
             ))}
           </ul>
         </section>

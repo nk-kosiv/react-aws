@@ -1,13 +1,33 @@
-import React from "react";
-import galleryImagesData from "./../data/gallery_images.json";
+import React, { useEffect, useState } from "react";
 
 const Welcome = () => {
+  const [galleryImagesData, setGalleryImagesData] = useState([]);
+
+  const loadGalleryImagesData = async () => {
+    const responce = await fetch(
+      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/gallery-images"
+    );
+
+    const result = await responce.json();
+
+    setGalleryImagesData(result);
+  };
+
+  useEffect(() => {
+    // Load the menu links from API Gateway
+    loadGalleryImagesData();
+  }, []);
   return (
     <div className="scene" id="welcome">
       <article className="content">
         <div className="gallery">
-          {galleryImagesData.map((image) => (
-            <img className={image.className} src={image.src} alt={image.alt} />
+          {galleryImagesData.map((image, i) => (
+            <img
+              key={i.toString()}
+              className={image.className}
+              src={image.src}
+              alt={image.alt}
+            />
           ))}
         </div>
         <h1>Welcome to the Landon&nbsp;Hotel</h1>
