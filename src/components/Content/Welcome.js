@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 
+//internal imports
+import { GALLERY_IMAGES_URL } from "./../../constants/awsGetEndpoints";
+import getDataFromAWS from "./../../utils/getDataFromAWS";
+
 const Welcome = () => {
   const [galleryImagesData, setGalleryImagesData] = useState([]);
 
-  const loadGalleryImagesData = async () => {
-    const responce = await fetch(
-      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/gallery-images"
-    );
-
-    const result = await responce.json();
-
-    setGalleryImagesData(result);
-  };
-
   useEffect(() => {
     // Load the menu links from API Gateway
-    loadGalleryImagesData();
+    getDataFromAWS(GALLERY_IMAGES_URL, setGalleryImagesData);
   }, []);
   return (
     <div className="scene" id="welcome">

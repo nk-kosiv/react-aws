@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+//internal imports
+import { MENU_LINKS_URL } from "./../constants/awsGetEndpoints";
+import getDataFromAWS from "./../utils/getDataFromAWS";
+
 const Header = () => {
   const [menuLinksData, setMenuLinksData] = useState([]);
 
-  const loadMenuLinksData = async () => {
-    const responce = await fetch(
-      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/menu-links"
-    );
-
-    const result = await responce.json();
-
-    setMenuLinksData(result);
-  };
-
   useEffect(() => {
     // Load the menu links from API Gateway
-    loadMenuLinksData();
+    getDataFromAWS(MENU_LINKS_URL, setMenuLinksData);
   }, []);
 
   return (

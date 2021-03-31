@@ -1,34 +1,22 @@
 import React, { useEffect, useState } from "react";
 
+//internal imports
+import {
+  ACCESSIBILITIES_URL,
+  SERVICES_URL,
+} from "./../../constants/awsGetEndpoints";
+import getDataFromAWS from "./../../utils/getDataFromAWS";
+
 const HotelInfo = () => {
   const [servicesData, setServicesData] = useState([]);
   const [accessibilityData, setAccessibilityData] = useState([]);
 
-  const loadAccessibilityData = async () => {
-    const responce = await fetch(
-      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/accessibilities"
-    );
-
-    const result = await responce.json();
-
-    setAccessibilityData(result);
-  };
-
-  const loadServicesData = async () => {
-    const responce = await fetch(
-      "https://bwwzzcct1m.execute-api.us-east-2.amazonaws.com/services"
-    );
-
-    const result = await responce.json();
-
-    setServicesData(result);
-  };
-
   useEffect(() => {
     // Load the menu links from API Gateway
-    loadAccessibilityData();
-    loadServicesData();
+    getDataFromAWS(ACCESSIBILITIES_URL, setAccessibilityData);
+    getDataFromAWS(SERVICES_URL, setServicesData);
   }, []);
+
   return (
     <div className="scene" id="hotelinfo">
       <article className="heading">
